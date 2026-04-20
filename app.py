@@ -56,14 +56,10 @@ def clear_cart():
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
+        db.create_all()  # Это создаст таблицы, если их нет
+        # Проверяем, есть ли товары, если нет — добавляем
         if not Product.query.first():
-            # Наполняем маркетплейс "вкусными" товарами
-            db.session.add_all([
-                Product(name="Горный мёд", price=850, description="С пасеки в Алтае, 500г", category="Еда"),
-                Product(name="Вязаный свитер", price=3200, description="Ручная работа, овечья шерсть", category="Одежда"),
-                Product(name="Керамическая ваза", price=1500, description="Обжиг в дровяной печи", category="Дом"),
-                Product(name="Чай из трав", price=450, description="Сбор 2025 года, успокаивающий", category="Еда")
-            ])
+            p1 = Product(name="Горный мёд", price=850, description="Натуральный")
+            db.session.add(p1)
             db.session.commit()
     app.run(debug=True)
